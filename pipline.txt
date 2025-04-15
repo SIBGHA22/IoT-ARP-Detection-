@@ -1,0 +1,38 @@
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+
+# Define pipeline steps
+pipeline_steps = [
+    "1. Load Dataset (IoTID20.csv)",
+    "2. Data Cleaning & Column Dropping",
+    "3. Label Encoding (Categorical to Numeric)",
+    "4. Feature/Label Split",
+    "5. Feature Scaling (Min-Max)",
+    "6. Class Balancing (SMOTE)",
+    "7. Train-Test Split (80/20)",
+    "8. Model Definitions (SVM, KNN, RF, LR)",
+    "9. Train & Evaluate Models",
+    "10. Performance Comparison (Accuracy, Precision, Recall, F1, Time)"
+]
+
+# Plot pipeline as a vertical flowchart
+fig, ax = plt.subplots(figsize=(10, 12))
+ax.axis('off')
+
+for i, step in enumerate(pipeline_steps):
+    box = mpatches.FancyBboxPatch(
+        (0.1, 1 - i * 0.1), 0.8, 0.07,
+        boxstyle="round,pad=0.02",
+        edgecolor="black",
+        facecolor="#e0f0ff"
+    )
+    ax.add_patch(box)
+    ax.text(0.5, 1 - i * 0.1 + 0.035, step,
+            ha='center', va='center', fontsize=10)
+
+# Save the pipeline image
+pipeline_path = "/mnt/data/pipeline.png"
+plt.savefig(pipeline_path, bbox_inches='tight')
+plt.close()
+
+pipeline_path

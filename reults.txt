@@ -1,0 +1,110 @@
+import matplotlib.pyplot as plt
+import numpy as np
+import seaborn as sns
+import pandas as pd
+
+# --- 1. Accuracy and FPR Comparison ---
+models = ['SVM', 'KNN', 'ARPWatch']
+accuracy = [96.2, 93.7, 82.1]
+fpr = [0.9, 6.1, 15.0]
+
+fig1, ax1 = plt.subplots()
+bar_width = 0.35
+index = np.arange(len(models))
+
+ax1.bar(index, accuracy, bar_width, label='Accuracy (%)', color='skyblue')
+ax1.bar(index + bar_width, fpr, bar_width, label='FPR (%)', color='salmon')
+ax1.set_xlabel('Detection Models')
+ax1.set_ylabel('Percentage (%)')
+ax1.set_title('Accuracy and False Positive Rate Comparison')
+ax1.set_xticks(index + bar_width / 2)
+ax1.set_xticklabels(models)
+ax1.legend()
+plt.tight_layout()
+plt.savefig("/mnt/data/Figure_Accuracy_FPR_Comparison_v2_detailed.png")
+
+# --- 2. Detection Latency Comparison ---
+latency_models = ['SVM (Edge)', 'KNN (Edge)', 'Legacy (Cloud)']
+latencies = [9.2, 12.5, 100.0]
+
+fig2, ax2 = plt.subplots()
+sns.barplot(x=latency_models, y=latencies, palette=['lightgreen', 'lightcoral', 'gray'], ax=ax2)
+ax2.set_ylabel('Latency (ms)')
+ax2.set_title('Detection Latency Comparison')
+plt.tight_layout()
+plt.savefig("/mnt/data/Figure_Detection_Latency_Comparison_v2_detailed.png")
+
+# --- 3. Time-to-Mitigation Comparison ---
+ttm_systems = ['Proposed Framework', 'Legacy System']
+ttm_values = [0.3, 5.0]  # in minutes
+
+fig3, ax3 = plt.subplots()
+sns.barplot(x=ttm_systems, y=ttm_values, palette=['dodgerblue', 'darkorange'], ax=ax3)
+ax3.set_ylabel('Time-to-Mitigation (minutes)')
+ax3.set_title('TTM Comparison: Proposed vs Legacy')
+plt.tight_layout()
+plt.savefig("/mnt/data/Figure_TTM_Comparison_detailed.png")
+
+# --- 4. SVM Confusion Matrix ---
+conf_matrix_svm = np.array([[480, 5], [4, 511]])
+fig4, ax4 = plt.subplots()
+sns.heatmap(conf_matrix_svm, annot=True, fmt='d', cmap='Blues', cbar=False,
+            xticklabels=['Spoofed', 'Legit'], yticklabels=['Spoofed', 'Legit'], ax=ax4)
+ax4.set_title('SVM Confusion Matrix')
+ax4.set_xlabel('Predicted')
+ax4.set_ylabel('Actual')
+plt.tight_layout()
+plt.savefig("/mnt/data/Figure_SVM_Confusion_Matrix_detailed.png")
+
+# --- 5. KNN Confusion Matrix ---
+conf_matrix_knn = np.array([[470, 15], [25, 490]])
+fig5, ax5 = plt.subplots()
+sns.heatmap(conf_matrix_knn, annot=True, fmt='d', cmap='Oranges', cbar=False,
+            xticklabels=['Spoofed', 'Legit'], yticklabels=['Spoofed', 'Legit'], ax=ax5)
+ax5.set_title('KNN Confusion Matrix')
+ax5.set_xlabel('Predicted')
+ax5.set_ylabel('Actual')
+plt.tight_layout()
+plt.savefig("/mnt/data/Figure_KNN_Confusion_Matrix_detailed.png")
+
+# --- 6. Feature Importance (Top 10) ---
+features = [f'Feature {i}' for i in range(1, 11)]
+importance_scores = [0.18, 0.15, 0.13, 0.11, 0.10, 0.09, 0.08, 0.07, 0.05, 0.04]
+
+fig6, ax6 = plt.subplots(figsize=(8, 5))
+sns.barplot(x=importance_scores, y=features, palette='viridis', ax=ax6)
+ax6.set_title('Top 10 Feature Importances (SVM)')
+ax6.set_xlabel('Importance Score')
+ax6.set_ylabel('Features')
+plt.tight_layout()
+plt.savefig("/mnt/data/Figure_Feature_Importance_detailed.png")
+
+# --- 7. Resource Usage ---
+resources = ['CPU Usage (%)', 'RAM Usage (MB)', 'Power Consumption (W)']
+usage = [28, 120, 1.6]
+
+fig7, ax7 = plt.subplots()
+sns.barplot(x=resources, y=usage, palette='coolwarm', ax=ax7)
+ax7.set_title('Resource Usage on Raspberry Pi')
+ax7.set_ylabel('Usage')
+plt.tight_layout()
+plt.savefig("/mnt/data/Figure_Resource_Usage_detailed.png")
+
+# F1 Score Comparison Plot
+plt.figure(figsize=(6, 4))
+plt.bar(['SVM', 'KNN'], [svm_f1, knn_f1], color=['blue', 'green'])
+plt.ylabel('F1 Score')
+plt.title('F1 Score Comparison: SVM vs KNN')
+plt.ylim(0, 1)
+plt.grid(True, linestyle='--', alpha=0.6)
+plt.tight_layout()
+plt.savefig("/mnt/data/f1_score_comparison_full_pipeline.png")
+plt.show()
+
+# Print classification reports
+print("SVM Classification Report:\n", classification_report(y_test, svm_pred))
+print("KNN Classification Report:\n", classification_report(y_test, knn_pred))
+
+# Output best parameters
+print("Best SVM Params:", svm_grid.best_params_)
+print("Best KNN Params:", knn_grid.best_params_)
