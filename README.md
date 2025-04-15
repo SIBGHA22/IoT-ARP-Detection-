@@ -4,7 +4,7 @@ This project presents a lightweight, ML-based framework (SVM & KNN) optimized fo
 
 ## Features
 
-- **96.2% Accuracy on spoofing detection
+- 96.2% Accuracy on spoofing detection
 - Uses 23 IoT-specific features
 - Real-time detection with <10ms latency
 - Benchmarked against traditional solutions (e.g., ARPWatch)
